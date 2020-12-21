@@ -1,0 +1,17 @@
+- name: Build the Mox Installer
+  hosts: localhost
+  vars:
+    ansible_python_interpreter: "{{lookup('env', 'VIRTUAL_ENV')}}/bin/python"
+  roles:
+#    - workloads/traefik
+#    - dashboard
+#    - workloads/hello-world
+#    - workloads/postgres
+    - workloads/prometheus
+#    - workloads/minio
+#    - workloads/rabbitmq
+#    - workloads/grafana
+#    - workloads/graphite
+#    - workloads/gitlab
+
+# todo https://docs.gitlab.com/runner/configuration/tls-self-signed.html
