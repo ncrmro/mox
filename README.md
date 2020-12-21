@@ -38,7 +38,13 @@ zfs destroy rpool/vm/data/hydra@2020-12-21_12-46-19
 
 ### Automated Snapshots
 
-We can enable automatic Snapshots using [Sanoid](https://github.com/jimsalterjrs/sanoid/blob/master/INSTALL.md#alpine-linux--busybox-based-distributions)
+```
+apk add zfs-auto-snapshot
+```
+
+```bash
+zfs-auto-snapshot -h
+```
 
 
 ### More than one encrypted disk
