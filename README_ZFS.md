@@ -31,13 +31,76 @@ zfs destroy rpool/vm/data/hydra@2020-12-21_12-46-19
 
 ### Automated Snapshots
 
-```
-apk add zfs-auto-snapshot
+Install required packages
+
+```zsh
+apk add git perl-config-inifiles perl-capture-tiny pv gzip lzop mbuffer
 ```
 
-```bash
-zfs-auto-snapshot -h
+Clone and checkout stable version
+
+```zsh
+git -C /opt clone https://github.com/jimsalterjrs/sanoid.git
+git checkout v2.1.0
 ```
+
+Create configuration files
+
+```zsh
+mkdir /etc/sanoid
+cp /opt/sanoid/sanoid.conf /etc/sanoid/sanoid.conf
+cp /opt/sanoid/sanoid.defaults.conf /etc/sanoid/sanoid.defaults.conf
+```
+
+Link the sanoid and syncoid binaries into sbin
+
+```zsh
+ln -s /opt/sanoid/sanoid /sbin/sanoid
+ln -s /opt/sanoid/syncoid /sbin/syncoid
+```
+
+You should now be able to execute `sanoid` and `syncoid`
+
+Enable snapshots on `rpool/ROOT/alpine` (where the os is installed)
+
+Comment out the block
+
+```
+# you can also handle datasets recursively in an atomic way without the possibility to override settings for child datasets.
+[zpoolname/parent2]
+        use_template = production
+        recursive = zfs
+```
+
+Add the following underneath it.
+
+```x
+[rpool/ROOT/alpine]
+        use_template = production
+```
+
+
+Next we need to set up the cronjobs 
+
+```zsh
+nano /etc/crontabs/root
+```
+
+Add the cronjobs, the flock makesure we commands don't run multiple times.
+
+```zsh
+*/15    *       *       *       *       flock -n /var/run/sanoid/cron-take.lock -c "TZ=UTC sanoid --take-snapshots"
+*/15    *       *       *       *       flock -n /var/run/sanoid/cron-prune.lock -c "sanoid --prune-snapshots"
+```
+
+Check crontab
+
+```zsh
+crontab -l
+```
+
+
+
 #### Offsite Backups
 
 mbuffer should be installed
