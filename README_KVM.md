@@ -1,6 +1,10 @@
 # KVM
 
-`modprobe tun`
+## Bridge Interface
+
+To load `modprobe tun`
+
+Add `tun` to `/etc/modules` to enable on rreboot
 
 ## Datasets
 
