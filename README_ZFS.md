@@ -112,12 +112,13 @@ apk add mbuffer
 ### Using zvols for VMS
 
 ```
-apk add udev 
+apk add udev zfs-udev
 service udev start
 service udev-postmount start
 service udev-trigger start
-
-
-apk add zfs-udev
 udevadm trigger
+
+rc-update add udev
+rc-update add udev-postmount
+rc-update add udev-trigger
 ```
