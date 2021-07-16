@@ -29,6 +29,14 @@ To destroy a snapshot
 zfs destroy rpool/vm/data/hydra@2020-12-21_12-46-19
 ```
 
+### Weekly Scrub
+
+Add the following to `/etc/crontabs/root`
+
+```
+*       *       */7     *       *       zpool scrub rpool
+```
+
 ### Automated Snapshots
 
 Install required packages
